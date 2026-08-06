@@ -9,7 +9,7 @@ A robust RESTful Web API built with **ASP.NET Core** and **Entity Framework Core
 - **RESTful Endpoints** – Full CRUD operations for managing student records.
 - **GUID-Based Routing** – Strongly typed unique identifiers (`/api/students/{id:guid}`).
 - **Entity Framework Core** – Code-First development with migrations and database version tracking.
-- **Interactive API Documentation** – Swagger UI for testing endpoints directly from the browser.
+- **Interactive API Documentation** – Built-in Swagger UI for testing endpoints directly from the browser.
 - **Environment-Based Configuration** – Database connection strings managed using `appsettings.json` and `appsettings.Development.json`.
 
 ---
@@ -20,7 +20,7 @@ A robust RESTful Web API built with **ASP.NET Core** and **Entity Framework Core
 |------------|-------------|
 | **Framework** | ASP.NET Core Web API (.NET 10) |
 | **ORM** | Entity Framework Core |
-| **Database** | SQL Server / PostgreSQL |
+| **Database** | PostgreSQL |
 | **API Documentation** | Swagger / OpenAPI |
 | **Tools** | .NET CLI, `dotnet-ef` |
 
@@ -33,7 +33,7 @@ A robust RESTful Web API built with **ASP.NET Core** and **Entity Framework Core
 Ensure the following are installed on your system:
 
 - .NET 10 SDK
-- SQL Server or PostgreSQL
+- PostgreSQL
 - Git
 
 Install or update the Entity Framework Core CLI tools:
@@ -59,15 +59,23 @@ cd StudentWebPortal
 
 Update the connection string in **appsettings.Development.json**.
 
-**SQL Server Example**
+Example:
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection" : "Host=localhost;Port=port_number;Database=DataBaseName;Username=USer_Name;Password=Your_Password;"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=StudentDb;Username=postgres;Password=YourPassword;"
   }
 }
 ```
+
+Replace the following values with your own:
+
+- `localhost` → PostgreSQL server host
+- `5432` → PostgreSQL port (default)
+- `StudentDb` → Database name
+- `postgres` → Database username
+- `YourPassword` → Database password
 
 ---
 
@@ -91,7 +99,7 @@ dotnet run
 
 # 📖 API Documentation
 
-After starting the application, open:
+After the application starts, open your browser and navigate to:
 
 ```
 http://localhost:5000/swagger
@@ -129,9 +137,26 @@ GET /api/students/3fa85f64-5717-4562-b3fc-2c963f66afa6
 
 ---
 
+# 📂 Project Structure
+
+```text
+StudentWebPortal/
+├── Controllers/
+├── Data/
+├── DTOs/
+├── Migrations/
+├── Models/
+├── Services/
+├── appsettings.json
+├── appsettings.Development.json
+├── Program.cs
+└── StudentWebPortal.csproj
+```
+
+---
 
 # 📄 License
 
-This project is distributed under the **MIT License**.
+This project is licensed under the **MIT License**.
 
-See the [LICENSE](LICENSE) file for more information.
+See the [LICENSE](LICENSE) file for more details.
