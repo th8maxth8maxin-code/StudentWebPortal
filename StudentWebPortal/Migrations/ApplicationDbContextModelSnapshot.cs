@@ -9,7 +9,7 @@ using StudentWebPortal.Data;
 
 namespace StudentWebPortal.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(StudentWebPortalContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
