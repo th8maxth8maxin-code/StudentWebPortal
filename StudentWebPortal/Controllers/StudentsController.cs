@@ -1,79 +1,97 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StudentWebPortal.Data;
 using StudentWebPortal.Model;
+using StudentWebPortal.Model.Dto;
 using StudentWebPortal.Model.Entity;
 
 namespace StudentWebPortal.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController(ApplicationDbContext dbContext) : ControllerBase
+    [Route("api/[controller]")]
+    
+    public class StudentsController : ControllerBase
     {
-        private readonly ApplicationDbContext dbContext = dbContext;
+        private readonly StudentWebPortalContext _context;
+        public StudentsController(StudentWebPortalContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public IActionResult GetAllStudents()
         {
-            return Ok(dbContext.Students.ToList());
+            return Ok(_context.Students.ToList());
 
         }
-
-        [HttpGet("{id:int}")]
-        public IActionResult GetStudent(int id) {
-            var student = dbContext.Students.Find(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            return Ok(student);
-        }
-        [HttpPost]
-        public IActionResult AddStudent(AddStudentDto addStudentDto) 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var studentEntity = new Student()
+            var student = await _context.Students.FindAsync(id);
+            return student is null ? NotFound() : Ok(student);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] StudentCreateDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var student = new Student
             {
-                StudentName = addStudentDto.StudentName,
-                PhoneNumber = addStudentDto.PhoneNumber,
-                Email = addStudentDto.Email,
-                Grade = addStudentDto.Grade,
-                Attendance = addStudentDto.Attendances
+                StudentName = dto.StudentName,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber,
+                EnrollmentDate = dto.EnrollmentDate,
+                Notes = dto.Notes
+                // IsActive defaults to true from the entity itself
+                // CreatedAt/UpdatedAt handled by SaveChanges override
             };
 
-            dbContext.Students.Add(studentEntity);
-            dbContext.SaveChanges();        
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
 
-            return Ok(studentEntity);
+            return CreatedAtAction(nameof(GetById), new { id = student.StudentId }, student);
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateStudent(int id, UpdateStudentDto updateStudentDto)
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] UpdateStudentDto updateStudentDto)
         {
-            var student = dbContext.Students.Find(id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var student = await _context.Students.FindAsync(id);
             if (student == null)
-            {
                 return NotFound();
-            }
 
             student.StudentName = updateStudentDto.StudentName;
-            student.PhoneNumber = updateStudentDto.PhoneNumber;
             student.Email = updateStudentDto.Email;
-            student.Grade = updateStudentDto.Grade;
-            student.Attendance = updateStudentDto.Attendance;
+            student.PhoneNumber = updateStudentDto.PhoneNumber;
 
-            dbContext.SaveChanges();
-            return Ok(student);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Students.Any(s => s.StudentId == id))
+                    return NotFound();
+                throw;
+            }
+
+            return NoContent();
         }
         [HttpDelete("{id:int}")]
         public IActionResult DeleteStudent(int id)
         {
-            var student = dbContext.Students.Find(id);
+            var student = _context.Students.Find(id);
             if (student == null)
             {
                 return NotFound();
             }
 
-            dbContext.Students.Remove(student);
-            dbContext.SaveChanges();
+            _context.Students.Remove(student);
+            _context.SaveChanges();
             return Ok();
         }
     }

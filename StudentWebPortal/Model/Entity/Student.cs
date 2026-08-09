@@ -12,16 +12,17 @@ namespace StudentWebPortal.Model.Entity
         public int StudentId { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(100, MinimumLength = 1)]
         public required string StudentName { get; set; }
 
         [EmailAddress]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string? Email { get; set; }
 
 
-        [Phone]
-        [MaxLength(15)]
+        [RegularExpression(@"^\+?[0-9\s\-()]{7,15}$",
+            ErrorMessage = "Enter a valid phone number.")]
+        [StringLength(15)]
         public string? PhoneNumber { get; set; }
 
 
@@ -44,12 +45,10 @@ namespace StudentWebPortal.Model.Entity
         public string? Notes { get; set; }
 
         [Editable(false)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Created At")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Editable(false)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Display(Name = "Updated At")]
         public DateTime? UpdatedAt { get; set; }
 

@@ -19,7 +19,7 @@ namespace StudentWebPortal.Model.Entity
         [Required]
         [AllowedValues("Present", "Absent", "Late")]
         [Display(Name = "Status")]
-        public string Status { get; set; } = "Present";
+        public required AttendanceStatus Status { get; set; }
 
         [MaxLength(250)]
         [DataType(DataType.MultilineText)]
