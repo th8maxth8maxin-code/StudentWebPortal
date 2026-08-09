@@ -67,6 +67,8 @@ namespace StudentWebPortal.Controllers
             student.StudentName = updateStudentDto.StudentName;
             student.Email = updateStudentDto.Email;
             student.PhoneNumber = updateStudentDto.PhoneNumber;
+            student.EnrollmentDate = updateStudentDto.EnrollmentDate;
+            student.Notes = updateStudentDto.Notes;
 
             try
             {
