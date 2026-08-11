@@ -10,6 +10,7 @@ namespace StudentWebPortal.Data
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<HifzSession> HifzSessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,6 +63,14 @@ namespace StudentWebPortal.Data
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
                 // CreatedAt for Attendance is handled by the DB default (HasDefaultValueSql),
                 // so no need to set it here.
+            }
+
+            foreach (var entry in ChangeTracker.Entries<HifzSession>())
+            {
+                if (entry.State == EntityState.Added)
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                if (entry.State == EntityState.Modified)
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
             }
         }
     }

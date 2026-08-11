@@ -10,7 +10,7 @@ using StudentWebPortal.Data;
 
 namespace StudentWebPortal.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(StudentWebPortalContext))]
     [Migration("20260803042356_initial migration")]
     partial class Initialmigration
     {

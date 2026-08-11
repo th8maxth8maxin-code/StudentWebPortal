@@ -10,7 +10,7 @@ using StudentWebPortal.Data;
 
 namespace StudentWebPortal.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(StudentWebPortalContext))]
     [Migration("20260805142608_UpdatedStudentSchema")]
     partial class UpdatedStudentSchema
     {
