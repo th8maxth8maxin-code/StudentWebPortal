@@ -1,11 +1,11 @@
 ﻿namespace StudentWebPortal.Model.Entity.Enum
 {
+    public enum SessionStatus
 
-    public enum Status
     {
-        Scheduled = 0,
-        Completed = 1,
-        Cancelled = 2
+        Present = 0,
+        Absent = 1,
+        Late = 2
     }
 }
 

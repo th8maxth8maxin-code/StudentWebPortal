@@ -3,11 +3,8 @@ using StudentWebPortal.Model.Entity;
 
 namespace StudentWebPortal.Data
 {
-    public class StudentWebPortalContext : DbContext
+    public class StudentWebPortalContext(DbContextOptions<StudentWebPortalContext> options) : DbContext(options)
     {
-        public StudentWebPortalContext(DbContextOptions<StudentWebPortalContext> options)
-            : base(options) { }
-
         public DbSet<Student> Students { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<HifzSession> HifzSessions { get; set; }
@@ -32,6 +29,10 @@ namespace StudentWebPortal.Data
                 entity.Property(a => a.CreatedAt)
                     .HasDefaultValueSql("now() AT TIME ZONE 'utc'")
                     .ValueGeneratedOnAdd();
+                
+                entity.Property(a => a.SessionStatus)
+                    .HasConversion<string>()
+                    .HasMaxLength(20);
             });
         }
 

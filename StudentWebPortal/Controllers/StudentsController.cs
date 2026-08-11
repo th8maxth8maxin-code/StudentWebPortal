@@ -10,14 +10,10 @@ namespace StudentWebPortal.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    
-    public class StudentsController : ControllerBase
+
+    public class StudentsController(StudentWebPortalContext context) : ControllerBase
     {
-        private readonly StudentWebPortalContext _context;
-        public StudentsController(StudentWebPortalContext context)
-        {
-            _context = context;
-        }
+        private readonly StudentWebPortalContext _context = context;
 
         [HttpGet]
         public IActionResult GetAllStudents()
@@ -25,7 +21,7 @@ namespace StudentWebPortal.Controllers
             return Ok(_context.Students.ToList());
 
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id : int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var student = await _context.Students.FindAsync(id);
@@ -54,7 +50,7 @@ namespace StudentWebPortal.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = student.StudentId }, student);
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id : int}")]
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] UpdateStudentDto updateStudentDto)
         {
             if (!ModelState.IsValid)
@@ -84,17 +80,14 @@ namespace StudentWebPortal.Controllers
             return NoContent();
         }
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteStudent(int id)
+        public async Task<IActionResult> DeleteStudent(int id)
         {
-            var student = _context.Students.Find(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
+            var record = await _context.Students.FindAsync(id);
+            if (record is null) return NotFound();
 
-            _context.Students.Remove(student);
-            _context.SaveChanges();
-            return Ok();
+            _context.Students.Remove(record);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

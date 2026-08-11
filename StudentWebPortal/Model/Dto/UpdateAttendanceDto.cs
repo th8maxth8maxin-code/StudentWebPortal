@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentWebPortal.Model.Dto
 {
-    public class AttendanceCreateDto
+    public class UpdateAttendanceDto
     {
         [Required(ErrorMessage = "Attendance status is required.")]
         [EnumDataType(typeof(SessionStatus), ErrorMessage = "Invalid attendance status selected.")]

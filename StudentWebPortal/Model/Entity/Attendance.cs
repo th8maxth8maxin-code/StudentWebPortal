@@ -13,24 +13,25 @@ namespace StudentWebPortal.Model.Entity
         public int StudentId { get; set; }
         public Student? Student { get; set; }
 
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime AttendanceDate { get; set; } = DateTime.Today;
 
-        [Required]
-        [AllowedValues("Present", "Absent", "Late")]
+        [Required(ErrorMessage = "Attendance status is required.")]
+        [EnumDataType(typeof(SessionStatus), ErrorMessage = "Invalid attendance status selected.")]
         [Display(Name = "Status")]
-        public Status? Status { get; set; }
+        public SessionStatus? SessionStatus { get; set; }
 
         [MaxLength(250)]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Notes")]
         public string? Notes { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Attendance RecordedBy is required.")]
+        [EnumDataType(typeof(Teachers), ErrorMessage = "Invalid attendance RecordedBy selected.")]
         [Display(Name = "Recorded By")]
-        public required string RecordedBy { get; set; }
+        public Teachers? RecordedBy { get; set; }
 
         [Editable(false)]
         [Display(Name = "Created At")]
