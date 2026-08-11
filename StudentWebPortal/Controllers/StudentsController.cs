@@ -13,6 +13,7 @@ namespace StudentWebPortal.Controllers
 
     public class StudentsController(StudentWebPortalContext context) : ControllerBase
     {
+        private const string V = "{id : int}";
         private readonly StudentWebPortalContext _context = context;
 
         [HttpGet]
@@ -21,7 +22,7 @@ namespace StudentWebPortal.Controllers
             return Ok(_context.Students.ToList());
 
         }
-        [HttpGet("{id : int}")]
+        [HttpGet(V)]
         public async Task<IActionResult> GetById(int id)
         {
             var student = await _context.Students.FindAsync(id);
@@ -50,7 +51,7 @@ namespace StudentWebPortal.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = student.StudentId }, student);
         }
-        [HttpPut("{id : int}")]
+        [HttpPut(V)]
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] UpdateStudentDto updateStudentDto)
         {
             if (!ModelState.IsValid)
@@ -79,7 +80,7 @@ namespace StudentWebPortal.Controllers
 
             return NoContent();
         }
-        [HttpDelete("{id:int}")]
+        [HttpDelete(V)]
         public async Task<IActionResult> DeleteStudent(int id)
         {
             var record = await _context.Students.FindAsync(id);
