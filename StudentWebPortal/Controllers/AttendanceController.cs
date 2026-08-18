@@ -13,7 +13,7 @@ namespace StudentWebPortal.Controllers
     [Route("api/[controller]")]
     public class AttendanceController(StudentWebPortalContext context) : Controller
     {
-        private const string V = "attendance/{studentid : int}";
+        private const string V = "attendance/{studentid:int}";
         private readonly StudentWebPortalContext _context = context;
 
         // GET /api/attendance  -> all records, with student name included

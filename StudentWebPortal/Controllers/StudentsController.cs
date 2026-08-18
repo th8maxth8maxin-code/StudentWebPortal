@@ -13,7 +13,7 @@ namespace StudentWebPortal.Controllers
 
     public class StudentsController(StudentWebPortalContext context) : ControllerBase
     {
-        private const string V = "{id : int}";
+        private const string V = "{id:int}";
         private readonly StudentWebPortalContext _context = context;
 
         [HttpGet]
@@ -37,7 +37,7 @@ namespace StudentWebPortal.Controllers
 
             var student = new Student
             {
-                StudentName = dto.StudentName,
+                Stundent = dto.StudentName,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 EnrollmentDate = dto.EnrollmentDate,
@@ -61,7 +61,7 @@ namespace StudentWebPortal.Controllers
             if (student == null)
                 return NotFound();
 
-            student.StudentName = updateStudentDto.StudentName;
+            student.Stundent = updateStudentDto.StudentName;
             student.Email = updateStudentDto.Email;
             student.PhoneNumber = updateStudentDto.PhoneNumber;
             student.EnrollmentDate = updateStudentDto.EnrollmentDate;

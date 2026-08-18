@@ -13,7 +13,7 @@ namespace StudentWebPortal.Model.Entity
 
         [Required]
         [StringLength(100, MinimumLength = 1)]
-        public required string StudentName { get; set; }
+        public required string Stundent { get; set; }
 
         [EmailAddress]
         [StringLength(100)]
@@ -52,5 +52,9 @@ namespace StudentWebPortal.Model.Entity
         [Display(Name = "Updated At")]
         public DateTime? UpdatedAt { get; set; }
 
+        public static implicit operator Student?(string? v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

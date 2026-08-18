@@ -12,7 +12,7 @@ namespace StudentWebPortal.Model.Dto
 
         [MaxLength(250)]
         [DataType(DataType.MultilineText)]
-        [Display(Name = "Notes")]
+        [Display(Name = "Notes")]   
         public string? Notes { get; set; }
 
         [Required(ErrorMessage = "Attendance RecordedBy is required.")]
