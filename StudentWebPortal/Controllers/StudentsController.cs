@@ -37,7 +37,7 @@ namespace StudentWebPortal.Controllers
 
             var student = new Student
             {
-                Stundent = dto.StudentName,
+                StudentName = dto.StudentName,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 EnrollmentDate = dto.EnrollmentDate,
@@ -61,7 +61,7 @@ namespace StudentWebPortal.Controllers
             if (student == null)
                 return NotFound();
 
-            student.Stundent = updateStudentDto.StudentName;
+            student.StudentName = updateStudentDto.StudentName;
             student.Email = updateStudentDto.Email;
             student.PhoneNumber = updateStudentDto.PhoneNumber;
             student.EnrollmentDate = updateStudentDto.EnrollmentDate;
