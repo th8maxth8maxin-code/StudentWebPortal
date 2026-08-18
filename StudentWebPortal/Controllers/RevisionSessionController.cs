@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StudentWebPortal.Data;       // <-- adjust to your ApplicationDbContext's namespace
+using StudentWebPortal.Data;
 using StudentWebPortal.Model.Dto;
 using StudentWebPortal.Model.Entity;
 using StudentWebPortal.Model.Entity.Enum;
@@ -9,18 +9,17 @@ namespace StudentWebPortal.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HifzSessionController(StudentWebPortalContext context) : ControllerBase
+    public class RevisionSessionController(StudentWebPortalContext context) : ControllerBase
     {
-
-        // GET: api/HifzSessionApi
+        // GET: api/RevisionSessionApi
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HifzSession>>> GetAll(
+        public async Task<ActionResult<IEnumerable<RevisionSession>>> GetAll(
             [FromQuery] int? studentId,
             [FromQuery] SessionStatus? status,
             [FromQuery] DateTime? fromDate,
             [FromQuery] DateTime? toDate)
         {
-            var query = context.HifzSessions
+            var query = context.RevisionSessions
                 .Include(s => s.Student)
                 .Include(s => s.Surah)
                 .Include(s => s.Rank)
@@ -47,11 +46,11 @@ namespace StudentWebPortal.Controllers
             return Ok(sessions);
         }
 
-        // GET: api/HifzSessionApi/5
+        // GET: api/RevisionSessionApi/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<HifzSession>> GetById(int id)
+        public async Task<ActionResult<RevisionSession>> GetById(int id)
         {
-            var session = await context.HifzSessions
+            var session = await context.RevisionSessions
                 .Include(s => s.Student)
                 .Include(s => s.Surah)
                 .Include(s => s.Rank)
@@ -64,35 +63,36 @@ namespace StudentWebPortal.Controllers
             return Ok(ToDto(session));
         }
 
-        // POST: api/HifzSessionApi
+        // POST: api/RevisionSessionApi
         [HttpPost]
-        public async Task<ActionResult<HifzSession>> Create([FromBody] HifzSessionCreateDto HifzSessionCreateDto)
+        public async Task<ActionResult<RevisionSession>> Create([FromBody] RevisionSessionCreateDto RevisionSessionCreateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var studentExists = await context.HifzSessions.AnyAsync(s => s.Id == HifzSessionCreateDto.StudentId);
+            var studentExists = await context.RevisionSessions.AnyAsync(s => s.Id == RevisionSessionCreateDto.StudentId);
             if (!studentExists)
-                return BadRequest($"Student with Id {HifzSessionCreateDto.StudentId} does not exist.");
+                return BadRequest($"Student with Id {RevisionSessionCreateDto.StudentId} does not exist.");
 
-            var session = new HifzSession
-            { 
-                SessionDate = HifzSessionCreateDto.SessionDate,
-                Surah = HifzSessionCreateDto.Surah,
-                VerseStart = HifzSessionCreateDto.VerseStart,
-                Status = HifzSessionCreateDto.Status,
-                Rank = HifzSessionCreateDto.Rank,
-                DurationMinutes = HifzSessionCreateDto.DurationMinutes,
-                Notes = HifzSessionCreateDto.Notes,
-                RecordedBy = HifzSessionCreateDto.RecordedBy,
+            var session = new RevisionSession
+            {
+                SessionDate = RevisionSessionCreateDto.SessionDate,
+                Surah = RevisionSessionCreateDto.Surah,
+                VerseStart = RevisionSessionCreateDto.VerseStart,
+                VerseEnd = RevisionSessionCreateDto.VerseEnd,
+                Status = RevisionSessionCreateDto.Status,
+                Rank = RevisionSessionCreateDto.Rank,
+                DurationMinutes = RevisionSessionCreateDto.DurationMinutes,
+                Notes = RevisionSessionCreateDto.Notes,
+                RecordedBy = RevisionSessionCreateDto.RecordedBy,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
 
-            context.HifzSessions.Add(session);
+            context.RevisionSessions.Add(session);
             await context.SaveChangesAsync();
 
-            var created = await context.HifzSessions
+            var created = await context.RevisionSessions
                 .Include(s => s.Student)
                 .Include(s => s.Surah)
                 .Include(s => s.Rank)
@@ -102,29 +102,31 @@ namespace StudentWebPortal.Controllers
             return CreatedAtAction(nameof(GetById), new { id = session.Id }, ToDto(created));
         }
 
-        // PUT: api/HifzSessionApi/5
+        // PUT: api/RevisionSessionApi/5
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] HifzSessionUpdateDto HifzSessionUpdateDto)
+        public async Task<IActionResult> Update(int id, [FromBody] RevisionSessionUpdateDto RevisionSessionUpdateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var session = await context.HifzSessions.FindAsync(id);
+            var session = await context.RevisionSessions.FindAsync(id);
             if (session == null)
                 return NotFound();
 
             // Optimistic concurrency check
-            if (HifzSessionUpdateDto.RowVersion != null)
-                context.Entry(session).Property("RowVersion").OriginalValue = HifzSessionUpdateDto.RowVersion;
+            if (RevisionSessionUpdateDto.RowVersion != null)
+                context.Entry(session).Property("RowVersion").OriginalValue = RevisionSessionUpdateDto.RowVersion;
 
-            session.SessionDate = HifzSessionUpdateDto.SessionDate;
-            session.Surah = HifzSessionUpdateDto.Surah;
-            session.VerseStart = HifzSessionUpdateDto.VerseStart;
-            session.Status = HifzSessionUpdateDto.Status;
-            session.Rank = HifzSessionUpdateDto.Rank;
-            session.DurationMinutes = HifzSessionUpdateDto.DurationMinutes;
-            session.Notes = HifzSessionUpdateDto.Notes;
-            session.RecordedBy = HifzSessionUpdateDto.RecordedBy;
+            session.StudentId = RevisionSessionUpdateDto.StudentId;
+            session.SessionDate = RevisionSessionUpdateDto.SessionDate;
+            session.Surah = RevisionSessionUpdateDto.Surah;
+            session.VerseStart = RevisionSessionUpdateDto.VerseStart;
+            session.VerseEnd = RevisionSessionUpdateDto.VerseEnd;
+            session.Status = RevisionSessionUpdateDto.Status;
+            session.Rank = RevisionSessionUpdateDto.Rank;
+            session.DurationMinutes = RevisionSessionUpdateDto.DurationMinutes;
+            session.Notes = RevisionSessionUpdateDto.Notes;
+            session.RecordedBy = RevisionSessionUpdateDto.RecordedBy;
             session.UpdatedAt = DateTime.UtcNow;
 
             try
@@ -133,7 +135,7 @@ namespace StudentWebPortal.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await context.HifzSessions.AnyAsync(s => s.Id == id))
+                if (!await context.RevisionSessions.AnyAsync(s => s.Id == id))
                     return NotFound();
 
                 return Conflict("The record was modified by another user. Please reload and try again.");
@@ -142,21 +144,21 @@ namespace StudentWebPortal.Controllers
             return NoContent();
         }
 
-        // DELETE: api/HifzSessionApi/5
+        // DELETE: api/RevisionSessionApi/5
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var session = await context.HifzSessions.FindAsync(id);
+            var session = await context.RevisionSessions.FindAsync(id);
             if (session == null)
                 return NotFound();
 
-            context.HifzSessions.Remove(session);
+            context.RevisionSessions.Remove(session);
             await context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private static HifzSessionDto ToDto(HifzSession s) => new HifzSessionDto
+        private static RevisionSessionDto ToDto(RevisionSession s) => new RevisionSessionDto
         {
             Id = s.Id,
             StudentId = s.StudentId,
@@ -164,6 +166,7 @@ namespace StudentWebPortal.Controllers
             SessionDate = s.SessionDate,
             Surah = s.Surah,
             VerseStart = s.VerseStart,
+            VerseEnd = s.VerseEnd,
             Status = s.Status,
             Rank = s.Rank,
             DurationMinutes = s.DurationMinutes,
@@ -174,5 +177,4 @@ namespace StudentWebPortal.Controllers
             RowVersion = s.RowVersion
         };
     }
-
 }

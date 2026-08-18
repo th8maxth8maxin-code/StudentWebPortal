@@ -1,14 +1,12 @@
-﻿using StudentWebPortal.Model.Entity.Enum;
+﻿using StudentWebPortal.Model.Entity;
+using StudentWebPortal.Model.Entity.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StudentWebPortal.Model.Entity
+namespace StudentWebPortal.Model.Dto
 {
-    public class HifzSession
+    public class RevisionSessionCreateDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public int StudentId { get; set; }
 
@@ -27,6 +25,11 @@ namespace StudentWebPortal.Model.Entity
         [Range(1, int.MaxValue, ErrorMessage = "Verse start must be a positive integer")]
         [Display(Name = "Verse Start")]
         public int VerseStart { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Verse end must be a positive integer")]
+        [Display(Name = "Verse End")]
+        public int VerseEnd { get; set; }
 
         [Required]
         public SessionStatus? Status { get; set; }
@@ -58,9 +61,5 @@ namespace StudentWebPortal.Model.Entity
 
         [Timestamp]
         public byte[]? RowVersion { get; set; }
-
-
-
-
     }
 }

@@ -8,6 +8,7 @@ namespace StudentWebPortal.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<HifzSession> HifzSessions { get; set; }
+        public DbSet<RevisionSession> RevisionSessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

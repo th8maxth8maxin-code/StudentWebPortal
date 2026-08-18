@@ -9,8 +9,10 @@ namespace StudentWebPortal.Model.Entity
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Student))]
+        [Required]
         public int StudentId { get; set; }
+
+        [ForeignKey(nameof(StudentId))]
         public Student? Student { get; set; }
 
 

@@ -7,8 +7,10 @@ namespace StudentWebPortal.Model.Dto
 {
     public class HifzSessionCreateDto
     {
-        [ForeignKey(nameof(Student))]
+        [Required]
         public int StudentId { get; set; }
+
+        [ForeignKey(nameof(StudentId))]
         public Student? Student { get; set; }
 
         [DataType(DataType.Date)]

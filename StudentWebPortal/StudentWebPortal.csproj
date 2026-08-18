@@ -21,8 +21,4 @@
 		<None Include="Ideas/**" CopyToOutputDirectory="Never" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Ideas\" />
-	</ItemGroup>
-
 </Project>

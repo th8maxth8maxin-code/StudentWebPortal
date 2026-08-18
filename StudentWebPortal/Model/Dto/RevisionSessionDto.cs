@@ -1,10 +1,11 @@
-﻿using StudentWebPortal.Model.Entity.Enum;
+﻿using StudentWebPortal.Model.Entity;
+using StudentWebPortal.Model.Entity.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StudentWebPortal.Model.Entity
+namespace StudentWebPortal.Model.Dto
 {
-    public class HifzSession
+    public class RevisionSessionDto
     {
         [Key]
         public int Id { get; set; }
@@ -14,11 +15,7 @@ namespace StudentWebPortal.Model.Entity
 
         [ForeignKey(nameof(StudentId))]
         public Student? Student { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime SessionDate { get; set; } = DateTime.Now;
-
+        public DateTime SessionDate { get; set; }
         [Required]
         public Surahs? Surah { get; set; }
 
@@ -27,6 +24,11 @@ namespace StudentWebPortal.Model.Entity
         [Range(1, int.MaxValue, ErrorMessage = "Verse start must be a positive integer")]
         [Display(Name = "Verse Start")]
         public int VerseStart { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Verse end must be a positive integer")]
+        [Display(Name = "Verse End")]
+        public int VerseEnd { get; set; }
 
         [Required]
         public SessionStatus? Status { get; set; }
@@ -58,9 +60,5 @@ namespace StudentWebPortal.Model.Entity
 
         [Timestamp]
         public byte[]? RowVersion { get; set; }
-
-
-
-
     }
 }

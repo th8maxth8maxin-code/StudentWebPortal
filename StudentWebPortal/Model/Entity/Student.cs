@@ -13,7 +13,7 @@ namespace StudentWebPortal.Model.Entity
 
         [Required]
         [StringLength(100, MinimumLength = 1)]
-        public required string Stundent { get; set; }
+        public required string StudentName { get; set; }
 
         [EmailAddress]
         [StringLength(100)]

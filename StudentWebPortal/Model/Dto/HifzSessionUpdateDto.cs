@@ -38,13 +38,6 @@ namespace StudentWebPortal.Model.Dto
         [Required]
         public Teachers? RecordedBy { get; set; }
 
-        [Editable(false)]
-        [Display(Name = "Created At")]
-        public DateTime CreatedAt { get; set; }
-
-        [Editable(false)]
-        [Display(Name = "Updated At")]
-        public DateTime UpdatedAt { get; set; }
 
         [Timestamp]
         public byte[]? RowVersion { get; set; }
