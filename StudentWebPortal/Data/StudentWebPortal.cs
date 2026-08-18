@@ -15,7 +15,7 @@ namespace StudentWebPortal.Data
             modelBuilder.Entity<Student>()
                 .HasIndex(s => s.Email)
                 .IsUnique()
-                .HasFilter("[Email] IS NOT NULL");
+                .HasFilter("\"Email\" IS NOT NULL");
 
             modelBuilder.Entity<Attendance>(entity =>
             {
@@ -30,7 +30,7 @@ namespace StudentWebPortal.Data
                 entity.Property(a => a.CreatedAt)
                     .HasDefaultValueSql("now() AT TIME ZONE 'utc'")
                     .ValueGeneratedOnAdd();
-                
+
                 entity.Property(a => a.SessionStatus)
                     .HasConversion<string>()
                     .HasMaxLength(20);
