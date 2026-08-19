@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentWebPortal.Data;
@@ -61,11 +62,16 @@ namespace StudentWebPortal.Controllers
             if (student == null)
                 return NotFound();
 
-            student.StudentName = updateStudentDto.StudentName;
-            student.Email = updateStudentDto.Email;
-            student.PhoneNumber = updateStudentDto.PhoneNumber;
-            student.EnrollmentDate = updateStudentDto.EnrollmentDate;
-            student.Notes = updateStudentDto.Notes;
+            if (updateStudentDto.StudentName != null)
+                student.StudentName = updateStudentDto.StudentName;
+            if (updateStudentDto.Email != null)
+                student.Email = updateStudentDto.Email;
+            if (updateStudentDto.PhoneNumber != null)
+                student.PhoneNumber = updateStudentDto.PhoneNumber;
+            if (updateStudentDto.EnrollmentDate.HasValue)
+                student.EnrollmentDate = updateStudentDto.EnrollmentDate.Value;
+            if (updateStudentDto.Notes != null)
+                student.Notes = updateStudentDto.Notes;
 
             try
             {
@@ -89,6 +95,24 @@ namespace StudentWebPortal.Controllers
             _context.Students.Remove(record);
             await _context.SaveChangesAsync();
             return NoContent();
+        
         }
+        [HttpPatch(V)]
+        public async Task<IActionResult> PatchStudent(int id, [FromBody] JsonPatchDocument<Student> patchDoc)
+        {
+            if (patchDoc == null) return BadRequest();
+
+            var student = await _context.Students.FindAsync(id);
+            if (student == null) return NotFound();
+
+            // Apply changes directly to the tracked entity
+            patchDoc.ApplyTo(student, ModelState);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
     }
 }

@@ -20,8 +20,6 @@ namespace StudentWebPortal.Model.Entity
         public string? Email { get; set; }
 
 
-        [RegularExpression(@"^\+?[0-9\s\-()]{7,15}$",
-            ErrorMessage = "Enter a valid phone number.")]
         [StringLength(15)]
         public string? PhoneNumber { get; set; }
 

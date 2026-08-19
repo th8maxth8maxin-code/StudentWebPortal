@@ -4,17 +4,16 @@ namespace StudentWebPortal.Model.Dto
 {
     public class UpdateStudentDto
     {
-        [Required, StringLength(100)]
-        public required string StudentName { get; set; }
-
+        [StringLength(100)]
+        public string? StudentName { get; set; }
+    
         [EmailAddress, StringLength(100)]
         public string? Email { get; set; }
 
-        [RegularExpression(@"^\+?[0-9\s\-()]{7,15}$")]
+
         public string? PhoneNumber { get; set; }
 
-        [Required]
-        public DateTime EnrollmentDate { get; set; }
+        public DateTime? EnrollmentDate { get; set; }
 
         [StringLength(250)]
         public string? Notes { get; set; }

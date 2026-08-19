@@ -66,10 +66,13 @@ namespace StudentWebPortal.Controllers
             var student_id = await _context.Attendances.FindAsync(studentid);
             if (student_id == null)
                 return NotFound();
-
-            student_id.SessionStatus = updateAttendanceDto.SessionStatus;
-            student_id.Notes = updateAttendanceDto.Notes;
-            student_id.RecordedBy = updateAttendanceDto.RecordedBy;
+            
+            if (updateAttendanceDto.SessionStatus  != null )
+                student_id.SessionStatus = updateAttendanceDto.SessionStatus;
+            if (updateAttendanceDto.Notes != null )
+                student_id.Notes = updateAttendanceDto.Notes;
+            if (updateAttendanceDto.RecordedBy != null )
+                student_id.RecordedBy = updateAttendanceDto.RecordedBy;
 
             try
             {
