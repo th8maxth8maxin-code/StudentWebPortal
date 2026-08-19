@@ -10,7 +10,7 @@ namespace StudentWebPortal.Model.Dto
         [EmailAddress, StringLength(100)]
         public string? Email { get; set; }
 
-        [RegularExpression(@"^\+?[0-9\s\-()]{7,15}$")]
+        
         public string? PhoneNumber { get; set; }
 
         [Required]

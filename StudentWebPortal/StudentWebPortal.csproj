@@ -9,6 +9,14 @@
 
 	<ItemGroup>
 		<PackageReference Include="Carbon.WebApplication.EntityFrameworkCore" Version="2.6.1" />
+		<PackageReference Include="FluentValidation" Version="12.1.1" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+		<PackageReference Include="libphonenumber-csharp" Version="9.0.37" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="7.2.1" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation.WebApi" Version="0.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="10.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
