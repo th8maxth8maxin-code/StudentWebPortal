@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentWebPortal.Data;
 using StudentWebPortal.Model.Dto;
 using StudentWebPortal.Model.Entity;
+
 
 
 namespace StudentWebPortal.Controllers
@@ -42,6 +44,7 @@ namespace StudentWebPortal.Controllers
             }
             var attendance = new Attendance
             {
+                StudentId = CreateUpdateDto.StudentId,
                 RecordedBy = CreateUpdateDto.RecordedBy,
                 SessionStatus = CreateUpdateDto.SessionStatus,
                 Notes = CreateUpdateDto.Notes
@@ -101,6 +104,46 @@ namespace StudentWebPortal.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{id:int}", Name = "UpateAttendance")]
+        public async Task<IActionResult> PatchAttendance(int id, [FromBody] JsonPatchDocument<Attendance> patchDoc)
+        {
+            var updateAttendance =await  _context.Attendances.FirstOrDefaultAsync(a => a.StudentId == id);
 
+            if (updateAttendance == null)
+                return NotFound();
+
+            patchDoc.ApplyTo(updateAttendance, JsonPatchError =>
+                {
+                    var key = JsonPatchError.AffectedObject.GetType().Name;
+                    ModelState.AddModelError(key, JsonPatchError.ErrorMessage);
+
+                });
+
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
+
+            await _context.SaveChangesAsync();
+
+            return new ObjectResult(updateAttendance);
+            //public async Update(int id , [FromBody] JsonPatchDocument<Attendance> patchdoc)
+            //var Update_attendance = _context.Attendances.FirstOrDefaultAsync(c => c.Id == id);
+            //if (Update_attendance == null)
+            //{
+            //    return NotFound("Give a Valid Id");
+            //}
+
+            //patchDoc.Applyto(Update_attendance, JsonPatchError =>
+            //{
+            //    var key = JsonPartchError.AfftectedObject.GetType().Name;
+            //    ModelState.AddModelError(Key, JsonPatchError.ErrorMessage);
+
+            //});
+            //if (!ModelState.IsValid)
+            //    return ValidationProblem(ModelState);
+
+            //await _context.SaveChangesAsync();
+
+            //return new ObjectResult(update_attendance)
+        }
     }
 }

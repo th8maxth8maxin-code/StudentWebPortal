@@ -12,13 +12,13 @@ namespace StudentWebPortal.Model.Entity
         [Required]
         public int StudentId { get; set; }
 
-        [ForeignKey(nameof(StudentId))]
-        public Student? Student { get; set; }
 
+        [ForeignKey(nameof(StudentId))]
+        public Student? Student  { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime AttendanceDate { get; set; } = DateTime.Today;
+        public DateTime AttendanceDate { get; set; } = DateTime.UtcNow;
 
         [Required(ErrorMessage = "Attendance status is required.")]
         [EnumDataType(typeof(SessionStatus), ErrorMessage = "Invalid attendance status selected.")]

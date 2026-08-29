@@ -1,10 +1,19 @@
-﻿using StudentWebPortal.Model.Entity.Enum;
+﻿using StudentWebPortal.Model.Entity;
+using StudentWebPortal.Model.Entity.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentWebPortal.Model.Dto
 {
     public class AttendanceCreateDto
     {
+        
+        [Required]
+        public int StudentId { get; set; }
+
+        [ForeignKey(nameof(StudentId))]
+        public Student? Student { get; set; }
+
         [Required(ErrorMessage = "Attendance status is required.")]
         [EnumDataType(typeof(SessionStatus), ErrorMessage = "Invalid attendance status selected.")]
         [Display(Name = "Status")]

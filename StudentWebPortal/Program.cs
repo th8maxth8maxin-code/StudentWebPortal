@@ -19,8 +19,18 @@ builder.Services.AddFluentValidationAutoValidation();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<StudentWebPortalContext>(options
-        => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<StudentWebPortalContext>(options =>
+{
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions => npgsqlOptions.EnableRetryOnFailure()
+    );
+
+
+
+    // Enable EF Core detailed errors:
+    options.EnableDetailedErrors();
+});
 
 
 var app = builder.Build();

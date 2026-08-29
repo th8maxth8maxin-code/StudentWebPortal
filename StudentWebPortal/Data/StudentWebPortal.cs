@@ -7,6 +7,8 @@ namespace StudentWebPortal.Data
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        
+
         public DbSet<HifzSession> HifzSessions { get; set; }
         public DbSet<RevisionSession> RevisionSessions { get; set; }
 
@@ -19,17 +21,14 @@ namespace StudentWebPortal.Data
 
             modelBuilder.Entity<Attendance>(entity =>
             {
-                entity.HasIndex(a => new { a.StudentId, a.AttendanceDate })
+                    
+                entity.HasIndex(a => new { a.StudentId , a.AttendanceDate })
                     .IsUnique();
 
                 entity.HasOne(a => a.Student)
                     .WithMany()
                     .HasForeignKey(a => a.StudentId)
                     .OnDelete(DeleteBehavior.Restrict);
-
-                entity.Property(a => a.CreatedAt)
-                    .HasDefaultValueSql("now() AT TIME ZONE 'utc'")
-                    .ValueGeneratedOnAdd();
 
                 entity.Property(a => a.SessionStatus)
                     .HasConversion<string>()
@@ -61,10 +60,12 @@ namespace StudentWebPortal.Data
 
             foreach (var entry in ChangeTracker.Entries<Attendance>())
             {
+                if (entry.State == EntityState.Added)
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+
+
                 if (entry.State == EntityState.Modified)
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
-                // CreatedAt for Attendance is handled by the DB default (HasDefaultValueSql),
-                // so no need to set it here.
             }
 
             foreach (var entry in ChangeTracker.Entries<HifzSession>())
