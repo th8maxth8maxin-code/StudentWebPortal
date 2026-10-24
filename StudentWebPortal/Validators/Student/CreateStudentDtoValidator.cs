@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿
+using FluentValidation;
 using StudentWebPortal.Model.Dto;
 using StudentWebPortal.Validators.Common;
 
@@ -9,7 +10,6 @@ namespace StudentWebPortal.Validators.Student
         public CreateStudentDtoValidator()
         {
             RuleFor(x => x.PhoneNumber)
-                .NotEmpty().WithMessage("Phone number is required.")
                 .ValidPhoneNumber();
         }
     }
